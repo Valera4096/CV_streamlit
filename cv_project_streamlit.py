@@ -6,7 +6,7 @@ import numpy as np
 
 
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', 'best.torchscript') 
+model = torch.hub.load('ultralytics/yolov5', 'custom', 'best.torchscript', trust_repo=True) 
 model.eval()
 model.conf = 0.8
 
