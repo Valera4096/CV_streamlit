@@ -7,6 +7,8 @@ import numpy as np
 import requests
 from io import BytesIO
 
+import pandas as pd
+
 
 model = torch.hub.load('ultralytics/yolov5', 'custom', 'best.torchscript', trust_repo=True) 
 model.eval()
@@ -44,6 +46,23 @@ def prediction(input, url_reques = False):
         st.write(f'Обнаруженный класс {class_name}') 
         st.write(f'С вероятностью {confidence:.2f} %')
         st.write('='*88)  
+        
+df = pd.read_csv('results (1).csv')
+
+st.title("Детекция опухоли мозга")
+
+st.header('Модель: YOLOv5')
+on = st.toggle('Отобразить метрики модели')
+if on:
+    st.header('Метрики в процессе обучания')
+    st.dataframe(df)
+    st.write('В общей сложности, модель обучалась около 400 эпох')
+    
+    st.header('PR-кривая (Precision-Recall Curve)')
+    st.image('PR_curve.png')
+    
+    st.header('Матрица ошибок (Confusion Matrix)')
+    st.image('confusion_matrix.png')
 
 
 uploaded_file2 = st.file_uploader("Загрузите изображение", type=["jpg",'png'], accept_multiple_files=True)
@@ -51,7 +70,7 @@ if uploaded_file2 is not None:
     for i in uploaded_file2:
         prediction(i)
         
-                        
+st.write('Или')                   
 url = st.text_input("Введите URL изображения:")
 
 if url:
