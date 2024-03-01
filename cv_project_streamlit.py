@@ -9,8 +9,10 @@ from io import BytesIO
 
 import pandas as pd
 
-
-model = torch.hub.load('ultralytics/yolov5', 'custom', 'best.torchscript', trust_repo=True) 
+@st.cache_resource
+def load_model():
+    return torch.hub.load('ultralytics/yolov5', 'custom', 'best.torchscript', trust_repo=True) 
+model = load_model()
 model.eval()
 model.conf = 0.8
 
